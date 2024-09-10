@@ -3,7 +3,7 @@ import { createWebSocket } from './webSocket';
 
 interface UseWebSocketResult<T> {
   messages: T[];
-  sendMessage: (message: T) => void;
+  sendMessage: (message: T) => Promise<T>;
   isConnected: boolean;
 }
 
@@ -12,11 +12,25 @@ export function useWebSocket<T>(url: string): UseWebSocketResult<T> {
   const [isConnected, setIsConnected] = useState<boolean>(false);
 
   const webSocketRef = useRef<WebSocket | null>(null);
+  const pendingRequests = useRef<Map<string, (response: T) => void>>(new Map());
+
+  const generateRequestId = useCallback(() => {
+    return Math.random().toString(36).substring(2, 15);
+  }, []);
 
   const handleMessage = useCallback((data: string) => {
     try {
       const parsedData = JSON.parse(data);
       setMessages((prevMessages) => [...prevMessages, parsedData as T]);
+
+      const requestId = parsedData.requestId;
+      if (requestId && pendingRequests.current.has(requestId)) {
+        const resolve = pendingRequests.current.get(requestId);
+        if (resolve) {
+          resolve(parsedData);
+          pendingRequests.current.delete(requestId);
+        }
+      }
     } catch (error) {
       console.error('Error parsing message data:', error);
     }
@@ -30,23 +44,6 @@ export function useWebSocket<T>(url: string): UseWebSocketResult<T> {
     setIsConnected(false);
     console.log('WebSocket connection closed.');
   }, []);
-
-  // const reconnect = useCallback(() => {
-  //   setReconnectAttempts((prevAttempts) => prevAttempts + 1);
-  //   const delay = Math.min(30000, Math.pow(2, reconnectAttempts) * 1000);
-
-  //   setTimeout(() => {
-  //     if (webSocketRef.current) {
-  //       webSocketRef.current.close();
-  //     }
-  //     webSocketRef.current = createWebSocket(
-  //       url,
-  //       handleMessage,
-  //       handleError,
-  //       handleClose
-  //     );
-  //   }, delay);
-  // }, [url, reconnectAttempts, handleMessage, handleError, handleClose]);
 
   useEffect(() => {
     webSocketRef.current = createWebSocket(
@@ -70,16 +67,32 @@ export function useWebSocket<T>(url: string): UseWebSocketResult<T> {
     }
   }, [url, handleMessage, handleError, handleClose]);
 
-  const sendMessage = useCallback((message: T) => {
-    if (
-      webSocketRef.current &&
-      webSocketRef.current.readyState === WebSocket.OPEN
-    ) {
-      webSocketRef.current.send(JSON.stringify(message));
-    } else {
-      console.error('WebSocket is not open. Unable to send message:', message);
-    }
-  }, []);
+  const sendMessage = useCallback(
+    (message: T): Promise<T> => {
+      if (
+        webSocketRef.current &&
+        webSocketRef.current.readyState === WebSocket.OPEN
+      ) {
+        return new Promise((resolve, reject) => {
+          const requestId = generateRequestId();
+          const messageWithId = { ...message, requestId };
+
+          pendingRequests.current.set(requestId, resolve);
+          webSocketRef.current!.send(JSON.stringify(messageWithId));
+
+          setTimeout(() => {
+            if (pendingRequests.current.has(requestId)) {
+              pendingRequests.current.delete(requestId);
+              reject(new Error('Request timed out.'));
+            }
+          }, 30000);
+        });
+      } else {
+        return Promise.reject(new Error('WebSocket is not open.'));
+      }
+    },
+    [generateRequestId]
+  );
 
   return {
     messages,
