@@ -1,45 +1,47 @@
 'use client';
 
 import { useState } from 'react';
+import { TextArea } from '@/components/TextArea';
 
 export default function Home() {
   const [text, setText] = useState('');
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    console.log('yo');
-  }
 
   function handleTextChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setText(event.target.value);
   }
 
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    console.log('yo');
+  }
+
   return (
-    <div>
-      <h1 className="" style={{ fontFamily: 'var(--font-geist-mono)' }}>
-        Story Seeker
-      </h1>
-      <h2 className="" style={{ fontFamily: 'var(--font-geist-mono)' }}>
+    <div className="flex flex-col items-center ">
+      <h1 className="text-3xl font-bold">Story Seeker</h1>
+      <h2 className="text-xl self-center">
         Say Goodbye to Endless Searching :)
       </h2>
 
-      <form onSubmit={handleSubmit}>
-        <label
-          htmlFor="inputField"
-          style={{ display: 'block', marginBottom: '8px' }}
-        >
-          Your Input:
-        </label>
-        <textarea
+      <form
+        className="flex flex-col mt-24 w-[50%] items-stretch"
+        onSubmit={handleSubmit}
+      >
+        <TextArea
           id="inputField"
           value={text}
+          maxLength={500}
           onChange={handleTextChange}
-          rows={3} 
-          maxLength={200}
-          style={{ width: '50%', padding: 12, maxHeight: '400px', boxSizing: 'border-box' }}
-          placeholder="Enter your text here (max 200 characters)"
+          rows={5}
+          placeholder="Just ask for a recomendation (max 500 characters)"
         />
-        <button type="submit">OK</button>
+        <button
+          className="mt-4 p-2 bg-purple-500 text-white rounded"
+          type="submit"
+        >
+          OK
+        </button>
       </form>
+      
     </div>
   );
 }

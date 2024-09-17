@@ -28,11 +28,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen px-8 py-10 bg-gradient-to-br from-yellow-700 to-purple-900 relative`}
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen px-8 py-10`}
+        style={{
+          backgroundImage: 'linear-gradient(to bottom right, #AC87C5, #E3DDE8)',
+        }}
       >
-        <div className="absolute inset-0 -z-10 mx-8 my-4 bg-[url('/images/bg.svg')] bg-no-repeat bg-center bg-[length:100%_100%]" />
+        <div className="absolute inset-0 -z-10 mx-8 my-4 bg-[url('/images/bg.svg')]" />
 
-        <div className="flex flex-grow flex-col mx-20 my-10" style={{ fontFamily: 'var(--font-geist-mono)' }}>
+        <div
+          className="flex flex-grow flex-col mx-20 my-10"
+          style={{ fontFamily: 'var(--font-geist-mono)' }}
+        >
           <main className="flex-grow z-10">{children}</main>
 
           <footer className="flex gap-6 flex-wrap items-center justify-center z-10">
