@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { TextArea } from '@/components/TextArea';
+import { Button } from '@/components/Button';
 
 export default function Home() {
   const [text, setText] = useState('');
@@ -22,10 +23,7 @@ export default function Home() {
         Say Goodbye to Endless Searching :)
       </h2>
 
-      <form
-        className="flex flex-col mt-24 w-[50%] items-stretch"
-        onSubmit={handleSubmit}
-      >
+      <form className="flex flex-col items-center mt-24 w-[50%]" onSubmit={handleSubmit}>
         <TextArea
           id="inputField"
           value={text}
@@ -34,14 +32,14 @@ export default function Home() {
           rows={5}
           placeholder="Just ask for a recomendation (max 500 characters)"
         />
-        <button
+        <Button height='w-[160px]' width='h-[40px]' className = "mt-4"/>
+        {/* <button
           className="mt-4 p-2 bg-purple-500 text-white rounded"
           type="submit"
         >
           OK
-        </button>
+        </button> */}
       </form>
-      
     </div>
   );
 }
