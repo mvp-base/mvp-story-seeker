@@ -1,11 +1,18 @@
 'use client';
 
+import Form from '@/components/Form';
+import Processing from '@/components/Processing';
 import { useState } from 'react';
-import { TextArea } from '@/components/TextArea';
-import { Button } from '@/components/Button';
+
+enum EState {
+  Idle = 'idle',
+  Processing = 'processing',
+  Processed = 'processed',
+}
 
 export default function Home() {
   const [text, setText] = useState('');
+  const [state, setState] = useState(EState.Idle);
 
   function handleTextChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setText(event.target.value);
@@ -13,33 +20,39 @@ export default function Home() {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log('yo');
+    setState(EState.Processing);
+    setTimeout(() => {
+      console.log('yo');
+      setState(EState.Processed);
+    }, 5000);
   }
 
   return (
     <div className="flex flex-col items-center ">
       <h1 className="text-3xl font-bold">Story Seeker</h1>
-      <h2 className="text-xl self-center">
-        Say Goodbye to Endless Searching :)
-      </h2>
-
-      <form className="flex flex-col items-center mt-24 w-[50%]" onSubmit={handleSubmit}>
-        <TextArea
-          id="inputField"
-          value={text}
-          maxLength={500}
-          onChange={handleTextChange}
-          rows={5}
-          placeholder="Just ask for a recomendation (max 500 characters)"
-        />
-        <Button height='w-[160px]' width='h-[40px]' className = "mt-4"/>
-        {/* <button
-          className="mt-4 p-2 bg-purple-500 text-white rounded"
-          type="submit"
-        >
-          OK
-        </button> */}
-      </form>
+      {state === EState.Idle && (
+        <>
+          <h2 className="text-xl self-center">
+            Say Goodbye to Endless Searching :)
+          </h2>
+          <Form
+            text={text}
+            handleTextChange={handleTextChange}
+            handleSubmit={handleSubmit}
+          />
+        </>
+      )}
+      {state === EState.Processing && (
+        <>
+          <h1 className="text-xl self-center">Processing...</h1>
+          <Processing />
+        </>
+      )}
+      {state === EState.Processed && (
+        <>
+          <h1 className="text-xl self-center">Enjoy!</h1>
+        </>
+      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 export function createWebSocket(
   url: string,
-  onMessage: (data: any) => void,
+  onMessage: (data: string) => void,
   onError: (error: Event) => void,
   onClose: () => void
 ): WebSocket {
