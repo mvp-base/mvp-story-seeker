@@ -1,54 +1,64 @@
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import searchIco from '../../public/images/search.svg';
-import xMarkIco from '../../public/images/x-mark.svg';
-import tickIco from '../../public/images/tick.svg';
-import bookIco from '../../public/images/book.svg';
-import filmIco from '../../public/images/film.svg';
+import XMarkIco from '../../public/images/x-mark.svg';
+import TickIco from '../../public/images/tick.svg';
+import BookIco from '../../public/images/book.svg';
+import FilmIco from '../../public/images/film.svg';
 
-import Image from 'next/image';
+import { useState } from 'react';
 import Slider from 'react-slick';
 
 export default function Processing() {
-  const CAROUSEL_ITEMS = 6;
+  const [currentMidle, setCurrentMiddle] = useState(3);
+  const CAROUSEL_ITEMS = 7;
+  const CAROUSEL_ITEMS_SHOW = 7;
   const CAROUSEL_SETTINGS = {
     dots: false,
     arrows: false,
+    pauseOnHover: false,
+    draggable: false,
+    swipe: false,
     infinite: true,
     speed: 600,
-    slidesToShow: 5,
+    slidesToShow: CAROUSEL_ITEMS_SHOW,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 1500,
+    beforeChange: (current: number, next: number) => {
+      setCurrentMiddle(
+        (next + Math.floor(CAROUSEL_ITEMS_SHOW / 2)) % CAROUSEL_ITEMS
+      );
+    },
   };
   const carouselItems = [];
 
   for (let i = 0; i < CAROUSEL_ITEMS; i++) {
-    const mainIco = i % 2 ? bookIco : filmIco;
-    const secondaryIco = Math.random() < 0.5 ? tickIco : xMarkIco;
+    const MainIcon = i % 2 ? BookIco : FilmIco;
+
+    const isMiddle = currentMidle === i;
 
     carouselItems.push(
-      <Image aria-hidden src={mainIco} alt="Main Icon" width={36} height={36} />
-    );
-    carouselItems.push(
-      <Image
-        aria-hidden
-        src={secondaryIco}
-        alt="Secondary Icon"
-        width={36}
-        height={36}
-      />
+      <div key={`main-${i}`} className="flex justify-center">
+        <MainIcon
+          className={`w-12 h-12 fill-current ${
+            isMiddle ? 'text-gray-200' : 'text-cyan-900'
+          } `}
+        />
+      </div>
     );
   }
 
   return (
-    <div className="relative w-[250px]">
-      <Slider {...CAROUSEL_SETTINGS}>
-        {carouselItems.map((item, index) => (
-          <div key={index}>{item}</div>
-        ))}
-      </Slider>     
-    </div>
+    <>
+      <div className="relative flex flex-col w-[600px]">
+        <Slider {...CAROUSEL_SETTINGS}>
+          {carouselItems.map((item, index) => (
+            <div key={index}>{item}</div>
+          ))}
+        </Slider>
+      </div>
+      <div className="absolute w-24 h-24 rounded-full opacity-80 bg-cyan-900 -translate-y-1 -z-10"></div>
+    </>
   );
 }

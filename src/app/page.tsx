@@ -5,14 +5,14 @@ import Processing from '@/components/Processing';
 import { useState } from 'react';
 
 enum EState {
-  Idle = 'idle',
-  Processing = 'processing',
-  Processed = 'processed',
+  Idle = 'Say Goodbye to Endless Searching :)',
+  Processing = 'Processing...',
+  Processed = 'Enjoy!',
 }
 
 export default function Home() {
   const [text, setText] = useState('');
-  const [state, setState] = useState(EState.Idle);
+  const [state, setState] = useState(EState.Processing);
 
   function handleTextChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setText(event.target.value);
@@ -28,31 +28,22 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col items-center ">
+    <div className="flex flex-grow flex-col items-center">
       <h1 className="text-3xl font-bold">Story Seeker</h1>
-      {state === EState.Idle && (
-        <>
-          <h2 className="text-xl self-center">
-            Say Goodbye to Endless Searching :)
-          </h2>
+      <h2 className="text-xl self-center">{state}</h2>
+      <div className="flex flex-grow items-center justify-center">
+        {state === EState.Idle && (
           <Form
             text={text}
             handleTextChange={handleTextChange}
             handleSubmit={handleSubmit}
           />
-        </>
-      )}
-      {state === EState.Processing && (
-        <>
-          <h1 className="text-xl self-center">Processing...</h1>
-          <Processing />
-        </>
-      )}
-      {state === EState.Processed && (
-        <>
-          <h1 className="text-xl self-center">Enjoy!</h1>
-        </>
-      )}
+        )}
+        {state === EState.Processing && <Processing />}
+        {state === EState.Processed && (
+          <></>
+        )}
+      </div>
     </div>
   );
 }

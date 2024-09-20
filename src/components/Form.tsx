@@ -10,7 +10,7 @@ interface IForm {
 export default function Form({ handleSubmit, handleTextChange, text }: IForm) {
   return (
     <form
-      className="flex flex-col items-center mt-24 w-[50%]"
+      className="flex flex-col items-center"
       onSubmit={handleSubmit}
     >
       <TextArea

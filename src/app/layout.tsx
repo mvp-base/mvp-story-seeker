@@ -39,7 +39,7 @@ export default function RootLayout({
           className="flex flex-grow flex-col mx-20 my-10"
           style={{ fontFamily: 'var(--font-geist-mono)' }}
         >
-          <main className="flex-grow z-10">{children}</main>
+          <main className="flex flex-grow z-10">{children}</main>
 
           <footer className="flex gap-6 flex-wrap items-center justify-center z-10">
             <a
