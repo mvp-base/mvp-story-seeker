@@ -10,8 +10,8 @@ import { useState } from 'react';
 import Slider from 'react-slick';
 
 export default function Processing() {
-  const [currentMidle, setCurrentMiddle] = useState(3);
-  const CAROUSEL_ITEMS = 7;
+  const [resultIcon, setResultIcon] = useState<null | JSX.Element>(null);
+  const CAROUSEL_ITEMS = 8;
   const CAROUSEL_ITEMS_SHOW = 7;
   const CAROUSEL_SETTINGS = {
     dots: false,
@@ -25,10 +25,17 @@ export default function Processing() {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 1500,
-    beforeChange: (current: number, next: number) => {
-      setCurrentMiddle(
-        (next + Math.floor(CAROUSEL_ITEMS_SHOW / 2)) % CAROUSEL_ITEMS
-      );
+    beforeChange: () => {
+      setResultIcon(null);
+    },
+    afterChange: () => {
+      const newIcon =
+        Math.random() > 0.5 ? (
+          <TickIco className="w-14 h-14 fill-current text-gray-200" />
+        ) : (
+          <XMarkIco className="w-14 h-14 fill-current text-gray-200" />
+        );
+      setResultIcon(newIcon);
     },
   };
   const carouselItems = [];
@@ -36,15 +43,9 @@ export default function Processing() {
   for (let i = 0; i < CAROUSEL_ITEMS; i++) {
     const MainIcon = i % 2 ? BookIco : FilmIco;
 
-    const isMiddle = currentMidle === i;
-
     carouselItems.push(
-      <div key={`main-${i}`} className="flex justify-center">
-        <MainIcon
-          className={`w-12 h-12 fill-current ${
-            isMiddle ? 'text-gray-200' : 'text-cyan-900'
-          } `}
-        />
+      <div key={`{i}`} className="flex justify-center">
+        <MainIcon className="w-12 h-12 fill-current opacity-80 text-cyan-900" />
       </div>
     );
   }
@@ -58,7 +59,9 @@ export default function Processing() {
           ))}
         </Slider>
       </div>
-      <div className="absolute w-24 h-24 rounded-full opacity-80 bg-cyan-900 -translate-y-1 -z-10"></div>
+      <div className="absolute flex items-center justify-center w-24 h-24 rounded-full bg-cyan-900 -translate-y-1">
+        {resultIcon}
+      </div>
     </>
   );
 }
