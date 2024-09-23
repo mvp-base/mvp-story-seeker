@@ -59,7 +59,12 @@ export default function Processing() {
           ))}
         </Slider>
       </div>
-      <div className="absolute flex items-center justify-center w-24 h-24 rounded-full bg-cyan-900 -translate-y-1">
+      <div
+        className="absolute flex items-center justify-center w-24 h-24 rounded-full -translate-y-1"
+        style={{
+          backgroundImage: 'radial-gradient(circle, #0e7490, #164e63)',
+        }}
+      >
         {resultIcon}
       </div>
     </>

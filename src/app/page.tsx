@@ -2,6 +2,8 @@
 
 import Form from '@/components/Form';
 import Processing from '@/components/Processing';
+import { Recommendations } from '@/components/Recommendations';
+
 import { useState } from 'react';
 
 enum EState {
@@ -12,7 +14,7 @@ enum EState {
 
 export default function Home() {
   const [text, setText] = useState('');
-  const [state, setState] = useState(EState.Processing);
+  const [state, setState] = useState(EState.Processed);
 
   function handleTextChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setText(event.target.value);
@@ -40,9 +42,7 @@ export default function Home() {
           />
         )}
         {state === EState.Processing && <Processing />}
-        {state === EState.Processed && (
-          <></>
-        )}
+        {state === EState.Processed && <Recommendations />}
       </div>
     </div>
   );
