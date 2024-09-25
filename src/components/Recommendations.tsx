@@ -1,6 +1,11 @@
 import { RecommendCard } from './RecommendCard';
+import { EState } from '@/app/page';
 
-export function Recommendations(data: object) {
+interface IRecommendations {
+  setState: (state: EState) => void;
+}
+
+export function Recommendations({ setState }: IRecommendations) {
   const recommendations = {
     books: [
       {
@@ -65,19 +70,42 @@ export function Recommendations(data: object) {
   };
 
   return (
-    <>
-      <RecommendCard
-        name="Test"
-        coverImage={recommendations.books[0].coverImage}
-        link="string"
-        shortDesc="string"
-        plot="string"
-        genre="string"
-        rating="string"
-        author="string"
-        ISBN="string"
-        pageCount="string"
-      />
-    </>
+    <div className="flex flex-col gap-6">
+      <button onClick={() => setState(EState.Idle)}>Back</button>
+      <div className="flex flex-wrap justify-center gap-12">
+        {recommendations.books.map((item, index) => (
+          <RecommendCard
+            key={index}
+            name={item.name}
+            coverImage={item.coverImage}
+            link={item.link}
+            shortDesc={item.shortDesc}
+            plot={item.plot}
+            genre={item.genre}
+            rating={item.rating}
+            author={item.author}
+            ISBN={item.ISBN}
+            pageCount={item.pageCount}
+          />
+        ))}
+      </div>
+      <div className="flex flex-wrap justify-center gap-12">
+        {recommendations.movies.map((item, index) => (
+          <RecommendCard
+            key={index}
+            name={item.name}
+            coverImage={item.coverImage}
+            link={item.link}
+            shortDesc={item.shortDesc}
+            plot={item.plot}
+            genre={item.genre}
+            rating={item.rating}
+            director={item.director}
+            boxOffice={item.boxOffice}
+            runtime={item.runtime}
+          />
+        ))}
+      </div>
+    </div>
   );
 }

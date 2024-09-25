@@ -6,7 +6,12 @@ import { Recommendations } from '@/components/Recommendations';
 
 import { useState } from 'react';
 
-enum EState {
+interface IRequestGenerateSuggestion {
+  type: 'REQUEST_GENERATE_SUGGESTION';
+  query: string;
+}
+
+export enum EState {
   Idle = 'Say Goodbye to Endless Searching :)',
   Processing = 'Processing...',
   Processed = 'Enjoy!',
@@ -14,19 +19,43 @@ enum EState {
 
 export default function Home() {
   const [text, setText] = useState('');
-  const [state, setState] = useState(EState.Processed);
+  const [state, setState] = useState(EState.Idle);
 
   function handleTextChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setText(event.target.value);
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setState(EState.Processing);
-    setTimeout(() => {
-      console.log('yo');
+
+    const message: IRequestGenerateSuggestion = {
+      type: 'REQUEST_GENERATE_SUGGESTION',
+      query: text,
+    };
+
+    try {
+      const response = await fetch('http://localhost:8080/suggestions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+      });
+
+      console.log(response);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('Response:', result);
       setState(EState.Processed);
-    }, 5000);
+    } catch (e) {
+      console.error('Error:', e);
+      setState(EState.Idle);
+    }
   }
 
   return (
@@ -42,7 +71,7 @@ export default function Home() {
           />
         )}
         {state === EState.Processing && <Processing />}
-        {state === EState.Processed && <Recommendations />}
+        {state === EState.Processed && <Recommendations setState={setState} />}
       </div>
     </div>
   );
