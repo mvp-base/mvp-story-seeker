@@ -1,31 +1,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-interface IBookRecommendation {
-  name: string;
-  coverImage: string;
-  link: string;
-  shortDesc: string;
-  plot: string;
-  genre: string;
-  rating: string;
-  author: string;
-  ISBN: string;
-  pageCount: string;
-}
-
-interface IMovieRecommendation {
-  name: string;
-  coverImage: string;
-  link: string;
-  shortDesc: string;
-  plot: string;
-  genre: string;
-  rating: string;
-  director: string;
-  boxOffice: string;
-  runtime: string;
-}
+import { IBookRecommendation, IMovieRecommendation } from '@/utils/types';
 
 type IRecommendation = IMovieRecommendation | IBookRecommendation;
 
@@ -59,8 +35,8 @@ export function RecommendCard(props: IRecommendation) {
             <p className="text-l">{props.rating}</p>
             <p className="text-l">{props.genre}</p>
           </div>
-          {/* <h3 className="text-xl">{props.ISBN}</h3> */}
-          {/* <h3 className="text-xl">{props.pageCount}</h3> */}
+          {/* <h3 className="text-xl">{props.ISBN}</h3>
+          <h3 className="text-xl">{props.pageCount}</h3> */}
         </div>
       </div>
     </>

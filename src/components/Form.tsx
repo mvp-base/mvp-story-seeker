@@ -10,7 +10,7 @@ interface IForm {
 export default function Form({ handleSubmit, handleTextChange, text }: IForm) {
   return (
     <form
-      className="flex flex-col items-center"
+      className="flex flex-col items-center w-full"
       onSubmit={handleSubmit}
     >
       <TextArea
@@ -19,7 +19,7 @@ export default function Form({ handleSubmit, handleTextChange, text }: IForm) {
         maxLength={500}
         onChange={handleTextChange}
         rows={5}
-        placeholder="Just ask for a recomendation (max 500 characters)"
+        placeholder="Just ask for a recomendation (max 500 characters)"        
       />
       <Button
         type="submit"
