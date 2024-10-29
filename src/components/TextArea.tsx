@@ -18,7 +18,7 @@ export function TextArea({
   placeholder = 'Enter your text here (max 200 characters)',
 }: ITextArea) {
   return (
-    <div className="relative w-full md:w-[80%] xl:w-[50%]">
+    <div className="relative w-full md:w-[70%] xl:w-[45%]">
       <div
         className={`absolute inset-0 bg-black border-4 border-black translate-x-1 translate-y-1`}
       ></div>

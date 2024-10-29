@@ -17,7 +17,7 @@ interface IRequestGenerateSuggestion {
 export default function Home() {
   const [requestId, setRequestId] = useState(0);
   const [text, setText] = useState('');
-  const [state, setState] = useState(EState.Processing);
+  const [state, setState] = useState(EState.Idle);
   const [recommendations, setRecommendations] = useState(null);
   const [error, setError] = useState(null);
 
@@ -81,7 +81,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-grow flex-col items-center">
+    <div className="flex flex-grow flex-col items-center w-full">
       <h1 className="text-2xl md:text-3xl font-bold text-center">
         Story Seeker
       </h1>

@@ -36,7 +36,7 @@ export default function RootLayout({
           className="flex flex-grow flex-col items-center overflow-hidden"
           style={{ fontFamily: 'var(--font-geist-mono)' }}
         >
-          <main className="flex flex-grow z-10">{children}</main>
+          <main className="flex flex-grow w-full z-10">{children}</main>
         </div>
       </body>
     </html>
