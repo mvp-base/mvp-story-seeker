@@ -3,11 +3,15 @@
 import Form from '@/components/Form';
 import Processing from '@/components/Processing';
 import { Recommendations } from '@/components/Recommendations';
+import { Notification } from '@/components/Notification';
 
 import { EState } from '@/utils/enums';
 import { logger } from '@/utils/logger';
 
 import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 interface IRequestGenerateSuggestion {
   type: 'REQUEST_GENERATE_SUGGESTION';
@@ -19,7 +23,6 @@ export default function Home() {
   const [text, setText] = useState('');
   const [state, setState] = useState(EState.Idle);
   const [recommendations, setRecommendations] = useState(null);
-  const [error, setError] = useState(null);
 
   function handleTextChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setText(event.target.value);
@@ -29,7 +32,6 @@ export default function Home() {
     logger(`[RqId:${requestId}] New outgoing API request...`);
     event.preventDefault();
     setState(EState.Processing);
-    setError(null);
 
     const message: IRequestGenerateSuggestion = {
       type: 'REQUEST_GENERATE_SUGGESTION',
@@ -65,14 +67,19 @@ export default function Home() {
           parsedResult.suggestions.movies.length === 0)
       ) {
         setState(EState.Idle);
-        setError('There are suggestions for your request');
+        toast(
+          <Notification
+            type="warning"
+            message="No suggestions :("
+          ></Notification>
+        );
       } else {
         setRecommendations(parsedResult.suggestions);
         setState(EState.Processed);
       }
     } catch (e) {
       logger(`[RqId:${requestId}] ${e.message}`);
-      setError(e.message);
+      toast(<Notification type="error" message={e.message}></Notification>);
       setState(EState.Idle);
     }
 
@@ -102,7 +109,19 @@ export default function Home() {
             recommendations={recommendations}
           />
         )}
-        {error && <div className="error-message">{error}</div>}
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable
+          pauseOnHover={false}
+          theme="light"
+          toastClassName="toast-transparent"
+        />
       </div>
     </div>
   );
