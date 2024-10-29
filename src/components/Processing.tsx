@@ -24,7 +24,7 @@ export default function Processing() {
     slidesToShow: CAROUSEL_ITEMS_SHOW,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 1500,
+    autoplaySpeed: 1000,
     beforeChange: () => {
       setResultIcon(null);
     },
@@ -45,27 +45,26 @@ export default function Processing() {
 
     carouselItems.push(
       <div key={`{i}`} className="flex justify-center">
-        <MainIcon className="w-12 h-12 fill-current opacity-80 text-cyan-900" />
+        <MainIcon className="absolute w-12 h-12 fill-current text-black opacity-20 translate-x-1 translate-y-1" />
+        <MainIcon className="relative w-12 h-12 fill-current opacity-100 text-cyan-800" />
       </div>
     );
   }
 
   return (
     <>
-      <div className="relative flex flex-col w-[600px]">
+      <div className="flex flex-col flex-grow justify-center w-[800px]">
         <Slider {...CAROUSEL_SETTINGS}>
           {carouselItems.map((item, index) => (
             <div key={index}>{item}</div>
           ))}
         </Slider>
       </div>
-      <div
-        className="absolute flex items-center justify-center w-24 h-24 rounded-full -translate-y-1"
-        style={{
-          backgroundImage: 'radial-gradient(circle, #0e7490, #164e63)',
-        }}
-      >
+      <div className="absolute flex flex-col w-24 h-24">
+        <div className="flex absolute inset-0 items-center justify-center bg-cyan-800 border-4 border-cyan-800 z-10">
         {resultIcon}
+        </div>
+        <div className="absolute inset-0 bg-black border-4 border-black translate-x-1 translate-y-1" />
       </div>
     </>
   );

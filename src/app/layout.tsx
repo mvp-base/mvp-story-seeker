@@ -29,13 +29,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen px-8 py-10`}
         style={{
-          backgroundImage: 'linear-gradient(to bottom right, #AC87C5, #E3DDE8)'
+          backgroundImage: 'linear-gradient(to bottom right, #AC87C5, #E3DDE8)',
         }}
       >
-        {/* <div className="absolute inset-0 -z-10 mx-8 my-4 bg-[url('/images/bg.svg')]" /> */}
-
         <div
-          className="flex flex-grow flex-col"
+          className="flex flex-grow flex-col items-center overflow-hidden"
           style={{ fontFamily: 'var(--font-geist-mono)' }}
         >
           <main className="flex flex-grow z-10">{children}</main>

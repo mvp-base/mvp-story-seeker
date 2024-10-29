@@ -1,7 +1,8 @@
 interface ITextArea {
   id?: string;
   value?: string;
-  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onChange?: (event: React.ChangeEvent) => void;
+  onKeyDown?: (event: React.KeyboardEvent) => void;
   rows?: number;
   maxLength?: number;
   placeholder?: string;
@@ -11,6 +12,7 @@ export function TextArea({
   id = 'textarea',
   value = '',
   onChange,
+  onKeyDown,
   rows = 3,
   maxLength = 200,
   placeholder = 'Enter your text here (max 200 characters)',
@@ -26,6 +28,7 @@ export function TextArea({
           id={id}
           value={value}
           onChange={onChange}
+          onKeyDown={onKeyDown}
           rows={rows}
           maxLength={maxLength}
           placeholder={placeholder}

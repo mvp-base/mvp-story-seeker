@@ -17,7 +17,7 @@ interface IRequestGenerateSuggestion {
 export default function Home() {
   const [requestId, setRequestId] = useState(0);
   const [text, setText] = useState('');
-  const [state, setState] = useState(EState.Idle);
+  const [state, setState] = useState(EState.Processing);
   const [recommendations, setRecommendations] = useState(null);
   const [error, setError] = useState(null);
 
@@ -39,7 +39,7 @@ export default function Home() {
     try {
       logger(`[RqId:${requestId}] Sending request for: ${text}`);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_STORYSEEKER_SERVICE_URL}/suggestions`,
+        `${process.env.NEXT_PUBLIC_CORE_API_URL}/suggestions`,
         {
           method: 'POST',
           headers: {
@@ -86,12 +86,13 @@ export default function Home() {
         Story Seeker
       </h1>
       <h2 className="text-lg md:text-xl text-center">{state}</h2>
-      <div className="flex flex-grow items-center justify-center w-full">
+      <div className="flex flex-col flex-grow items-center justify-center w-full">
         {state === EState.Idle && (
           <Form
             text={text}
             handleTextChange={handleTextChange}
             handleSubmit={handleSubmit}
+            submitByEnter={true}
           />
         )}
         {state === EState.Processing && <Processing />}
