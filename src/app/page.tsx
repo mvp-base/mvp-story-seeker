@@ -29,8 +29,8 @@ export default function Home() {
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    logger(`[RqId:${requestId}] New outgoing API request...`);
     event.preventDefault();
+    logger(`[RqId:${requestId}] New outgoing API request...`);
     setState(EState.Processing);
 
     const message: IRequestGenerateSuggestion = {

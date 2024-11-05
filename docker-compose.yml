@@ -1,0 +1,11 @@
+services:
+  storyseeker:
+    build: .
+    container_name: storyseeker-dev
+    environment:
+      - NEXT_PUBLIC_CORE_API_URL=http://localhost:8081
+    ports:
+      - "3001:3000"
+    volumes:
+      - ~/projects/storyseeker:/app
+    command: npm run dev
