@@ -21,7 +21,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t storyseeker .
+          docker build --build-arg NEXT_PUBLIC_CORE_API_URL=${{ secrets.NEXT_PUBLIC_CORE_API_URL }} -t storyseeker .
 
       - name: Tag Docker image
         run: |
@@ -45,7 +45,6 @@ jobs:
             
             docker run -d \
               --restart unless-stopped \
-              -e NEXT_PUBLIC_CORE_API_URL=https://api.mvanik.com \
               -p 3000:3000 \
               --name storyseeker \
               ${{ secrets.DOCKER_USERNAME }}/storyseeker:latest
