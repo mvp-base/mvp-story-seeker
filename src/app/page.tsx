@@ -93,6 +93,7 @@ export default function Home() {
         Story Seeker
       </h1>
       <h2 className="text-lg md:text-xl text-center">{state}</h2>
+      <p>{process.env.NEXT_PUBLIC_CORE_API_URL}</p>
       <div className="flex flex-col flex-grow items-center justify-center w-full">
         {state === EState.Idle && (
           <Form
