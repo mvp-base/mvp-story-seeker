@@ -36,8 +36,8 @@ export function RecommendCard(props: IRecommendation) {
 
           <div className="flex flex-row m-2 gap-2">
             <Badge text={props.rating} />
-            {genreArray.map(genre => (
-              <Badge text={genre} />
+            {genreArray.map((genre, index) => (
+              <Badge key={index} text={genre} />
             ))}
 
           </div>
