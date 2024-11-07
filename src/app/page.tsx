@@ -41,7 +41,7 @@ export default function Home() {
     try {
       logger(`[RqId:${requestId}] Sending request for: ${text}`);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_CORE_API_URL}/suggestions`,
+        `https://api.mvanik.com/suggestions`,
         {
           method: 'POST',
           headers: {

@@ -21,7 +21,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build --build-arg NEXT_PUBLIC_CORE_API_URL=${{ secrets.NEXT_PUBLIC_CORE_API_URL }} -t storyseeker .
+          docker build -t storyseeker .
 
       - name: Tag Docker image
         run: |
