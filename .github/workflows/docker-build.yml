@@ -8,4 +8,4 @@ on:
 jobs:
   deploy:
     uses: vanm30-portfolio/actions/.github/workflows/deploy.yml@v0.2.5
-    secrets: inhe
+    secrets: inherit
