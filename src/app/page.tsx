@@ -41,7 +41,7 @@ export default function Home() {
     try {
       logger(`[RqId:${requestId}] Sending request for: ${text}`);
       const response = await fetch(
-        `https:api.matejv.com/suggestions`,
+        `https://api.matejv.com/suggestions`,
         {
           method: 'POST',
           headers: {
