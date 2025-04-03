@@ -4,12 +4,11 @@ import Form from '@/components/Form';
 import Processing from '@/components/Processing';
 import { Recommendations } from '@/components/Recommendations';
 import { Notification } from '@/components/Notification';
-
 import { EState } from '@/utils/enums';
 import { logger } from '@/utils/logger';
-
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import { IApiResponse } from '@/utils/types';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -40,51 +39,47 @@ export default function Home() {
 
     try {
       logger(`[RqId:${requestId}] Sending request for: ${text}`);
-      const response = await fetch(
-        `https://api.matejv.com/suggestions`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(message),
-        }
-      );
 
-      logger(`[RqId:${requestId}] Response recieved`);
+      const response = await fetch(`https://api.matejv.com/suggestions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+      });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const rawResponse = await response.text();
+      logger(`[RqId:${requestId}] Raw Response: ${rawResponse}`);
+
+      let result: IApiResponse;
+      try {
+        result = JSON.parse(rawResponse);
+        logger(`[RqId:${requestId}] Parsed JSON: ${JSON.stringify(result)}`);
+      } catch (jsonParseError) {
+        throw new Error(`Error parsing JSON: ${jsonParseError.message}`);
       }
 
-      const result = await response.json();
-      const parsedResult = JSON.parse(result);
-      logger(`[RqId:${requestId}] Received suggestions: ${result}`);
       if (
-        (!parsedResult.suggestions.books ||
-          parsedResult.suggestions.books.length === 0) &&
-        (!parsedResult.suggestions.movies ||
-          parsedResult.suggestions.movies.length === 0)
+        (!result.suggestions.books || result.suggestions.books.length === 0) &&
+        (!result.suggestions.movies || result.suggestions.movies.length === 0)
       ) {
         setState(EState.Idle);
-        toast(
-          <Notification
-            type="warning"
-            message="No suggestions :("
-          ></Notification>
-        );
+        toast(<Notification type="warning" message="No suggestions :(" />);
       } else {
-        setRecommendations(parsedResult.suggestions);
+        setRecommendations(result.suggestions);
         setState(EState.Processed);
       }
+
     } catch (e) {
-      logger(`[RqId:${requestId}] ${e.message}`);
-      toast(<Notification type="error" message={e.message}></Notification>);
+      logger(`[RqId:${requestId}] Error: ${e.message}`);
+      toast(<Notification type="error" message={e.message} />);
       setState(EState.Idle);
     }
 
     setText('');
     setRequestId((prev) => prev + 1);
+
+
   }
 
   return (

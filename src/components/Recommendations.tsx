@@ -1,20 +1,17 @@
 import { RecommendCard } from './RecommendCard';
 import { EState } from '@/utils/enums';
 
-import { IMovieRecommendation, IBookRecommendation } from '@/utils/types';
+import { IRecommendations } from '@/utils/types';
 
-interface IRecommendations {
+interface IRecommendationsComponent {
   setState: (state: EState) => void;
-  recommendations: {
-    books: Array<IBookRecommendation>;
-    movies: Array<IMovieRecommendation>;
-  };
+  recommendations: IRecommendations;
 }
 
 export function Recommendations({
   setState,
   recommendations,
-}: IRecommendations) {
+}: IRecommendationsComponent) {
   return (
     <div className="flex flex-col gap-6">
       <button onClick={() => setState(EState.Idle)}>Back</button>
