@@ -40,7 +40,7 @@ export default function Home() {
     try {
       logger(`[RqId:${requestId}] Sending request for: ${text}`);
 
-      const response = await fetch(`https://api.matejv.com/suggestions`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_GATEWAY}/suggestions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export default function Home() {
 
     } catch (e) {
       logger(`[RqId:${requestId}] Error: ${e.message}`);
-      toast(<Notification type="error" message={e.message} />);
+      toast(<Notification type="error" message={"Oops. Idk what happened. Please try again soon."} />);
       setState(EState.Idle);
     }
 
