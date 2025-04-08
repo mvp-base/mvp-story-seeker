@@ -78,8 +78,6 @@ export default function Home() {
 
     setText('');
     setRequestId((prev) => prev + 1);
-
-
   }
 
   return (
