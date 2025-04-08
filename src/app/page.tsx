@@ -84,7 +84,6 @@ export default function Home() {
     <div className="flex flex-grow flex-col items-center w-full">
       <h1 className="text-2xl md:text-3xl font-bold text-center">
         Story Seeker
-        {process.env.NEXT_PUBLIC_API_GATEWAY}
       </h1>
       <h2 className="text-lg md:text-xl text-center">{state}</h2>
       <div className="flex flex-col flex-grow items-center justify-center w-full">
