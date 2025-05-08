@@ -5,12 +5,6 @@ services:
     restart: unless-stopped
     ports:
       - "3000"
-    networks:
-      - mvp-nw
     env_file:
       - .env
 
-
-networks:
-  mvp-nw:
-    external: true
