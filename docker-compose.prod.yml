@@ -1,0 +1,16 @@
+services:
+  mvp-story-seeker:
+    container_name: mvp-story-seeker
+    image: matejv30/mvp-story-seeker:${TAG_NAME}
+    restart: unless-stopped
+    ports:
+      - "3000"
+    networks:
+      - mvp-nw
+    env_file:
+      - .env
+
+
+networks:
+  mvp-nw:
+    external: true
