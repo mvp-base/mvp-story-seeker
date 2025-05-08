@@ -3,8 +3,6 @@ services:
     container_name: mvp-story-seeker
     image: matejv30/mvp-story-seeker:${TAG_NAME}
     restart: unless-stopped
-    ports:
-      - "3000"
     env_file:
       - .env
 
